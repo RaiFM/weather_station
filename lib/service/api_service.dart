@@ -52,8 +52,7 @@ class ApiService {
     }
   }
 
-  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(
-      List<String?> cidadesSalvas) async {
+  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(List<String?> cidadesSalvas) async {
     String? nomeCidade = "";
     String url = "$linkApi$apiKey&city_name=";
     List<ClimaModel?> previsao = [];
