@@ -16,3 +16,12 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+
+ext {
+    flutter = [
+        compileSdkVersion: 34,
+        minSdkVersion    : 21,
+        targetSdkVersion : 34
+    ]
+}
