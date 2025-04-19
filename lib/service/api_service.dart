@@ -10,17 +10,14 @@ class ApiService {
     return _apiService!;
   }
 
-  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(){
-    
-  }
+  String linkApi = "https://api.hgbrasil.com/weather?format=json-cors";
+  String apiKey = "&key=ea69fe0d";
 
-  Future<List<ClimaModel>> pegarClimaSemanalCidade(String cidade) async {
-    String linkApi =
-        "https://api.hgbrasil.com/weather?format=json-cors&key=ea69fe0d&city_name=" + cidade;
-    List<ClimaModel> previsao = [];
+  Future<List<ClimaModel?>> _requisicaoApi(String url, int dias) async {
+    List<ClimaModel?> previsao = [];
 
     try {
-      var resposta = await http.get(Uri.parse(linkApi));
+      var resposta = await http.get(Uri.parse(url));
 
       if (resposta.statusCode == 200) {
         var dados = json.decode(resposta.body);
@@ -39,18 +36,63 @@ class ApiService {
               tempMax: dia["max"] ?? 0,
               icone: dia["condition"] ?? '');
 
-          if (previsao.length == 7) break;
+          if (previsao.length == dias) break;
 
           previsao.add(clima);
         }
         return previsao;
       } else {
-        print("Erro na requisição: ${resposta.statusCode}");
+        Exception("Erro ao fazer requisição de clima ");
         return [];
       }
     } catch (e) {
+      Exception("Erro ao fazer requisição de clima ");
       print("Erro: $e");
       return [];
     }
+  }
+
+  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(
+      List<String?> cidadesSalvas) async {
+    String? nomeCidade = "";
+    String url = "$linkApi$apiKey&city_name=";
+    List<ClimaModel?> previsao = [];
+
+    try {
+      for (int i = 0; i < cidadesSalvas.length; i++) {
+        nomeCidade = cidadesSalvas[i];
+        String urlCidade = url + nomeCidade!;
+        List<ClimaModel?> previsaoReq = await _requisicaoApi(urlCidade, 1);
+        previsao.add(previsaoReq[0]);
+        urlCidade = url;
+      }
+    } catch (e) {
+      Exception("erro ao tentar acessar requsição");
+    }
+    return previsao;
+  }
+
+  Future<List<ClimaModel?>> pegarClimaSemanalNome(String nomeCidade) async {
+    String url = "$linkApi$apiKey&city_name=$nomeCidade";
+    List<ClimaModel?> previsao = [];
+
+    List<ClimaModel?> previsaoReq = await _requisicaoApi(url, 7);
+    for (int i = 0; i < previsaoReq.length; i++) {
+      previsao.add(previsaoReq[i]);
+    }
+
+    return previsao;
+  }
+
+  Future<List<ClimaModel?>> pegarClimaSemanalLatLon(String latLon) async {
+    String url = "$linkApi$apiKey&city_name=$latLon";
+    List<ClimaModel?> previsao = [];
+
+    List<ClimaModel?> previsaoReq = await _requisicaoApi(url, 7);
+    for (int i = 0; i < previsaoReq.length; i++) {
+      previsao.add(previsaoReq[i]);
+    }
+
+    return previsao;
   }
 }

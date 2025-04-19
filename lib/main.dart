@@ -38,17 +38,18 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final ApiService api = ApiService();
 
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
+  List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
 
   void _incrementCounter() {
     setState(() {
-    widget.api.getInstance.pegarClimaSemanal();
-    print(widget.api.getInstance.pegarClimaSemanal());
+    print(widget.api.getInstance.pegarClimaSemanalNome("Carapicuíba,SP"));
+    
     });
   }
 
