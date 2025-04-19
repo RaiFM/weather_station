@@ -81,4 +81,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'weather-station-2ams.firebasestorage.app',
     measurementId: 'G-KK6KDELXBV',
   );
+
 }

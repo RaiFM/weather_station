@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_station/service/api_service.dart';
 import 'firebase_options.dart';
 
  void  main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -46,11 +48,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
 
+  
+
+
+
   void _incrementCounter() {
     setState(() {
-    print(widget.api.getInstance.pegarClimaSemanalNome("Carapicuíba,SP"));
-    
     });
+  }
+  void sla() async{
+    Position? position = await Geolocator.getLastKnownPosition();
+    print(position);
   }
 
   @override
@@ -80,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: sla,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
