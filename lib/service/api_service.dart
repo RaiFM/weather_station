@@ -10,9 +10,13 @@ class ApiService {
     return _apiService!;
   }
 
-  Future<List<ClimaModel>> pegarClimaSemanal() async {
+  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(){
+    
+  }
+
+  Future<List<ClimaModel>> pegarClimaSemanalCidade(String cidade) async {
     String linkApi =
-        "https://api.hgbrasil.com/weather?format=json-cors&key=ea69fe0d";
+        "https://api.hgbrasil.com/weather?format=json-cors&key=ea69fe0d&city_name=" + cidade;
     List<ClimaModel> previsao = [];
 
     try {
@@ -37,18 +41,8 @@ class ApiService {
 
           if (previsao.length == 7) break;
 
-
           previsao.add(clima);
         }
-        print( previsao[0].tempMax);
-        
-        print( previsao[1].tempMax);
-        print( previsao[2].tempMax);
-        print( previsao[3].tempMax);
-        print( previsao[4].tempMax);
-        print( previsao[5].tempMax);
-        
-        print( previsao[6].tempMax);
         return previsao;
       } else {
         print("Erro na requisição: ${resposta.statusCode}");
