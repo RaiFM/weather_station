@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_station/service/api_service.dart';
 import 'firebase_options.dart';
 
  void  main() async {
@@ -25,15 +26,17 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Teste App'),
+      home:  MyHomePage(title: 'Teste App'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  //const
+   MyHomePage({super.key, required this.title});
 
   final String title;
+  final ApiService api = ApiService();
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -44,8 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-     
-      _counter++;
+    widget.api.getInstance.pegarClimaSemanal();
+    print(widget.api.getInstance.pegarClimaSemanal());
     });
   }
 
@@ -69,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+    'oi',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
