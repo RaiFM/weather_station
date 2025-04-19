@@ -8,15 +8,18 @@ class RepositoryApi implements IRepositoryApi{
   RepositoryApi({required this.apiService});
 
   @override
-  Future<List<ClimaModel>> listarClima() {
-    // TODO: implement listarClima
-    throw UnimplementedError();
+  Future<List<ClimaModel?>> listarClimaLatLong(String latLon) async {
+   return await apiService.getInstance.pegarClimaSemanalLatLon(latLon);
+  }
+  
+  @override
+  Future<List<ClimaModel?>> listarClimaNome(String nomeCidade) async{
+   return await apiService.getInstance.pegarClimaSemanalNome(nomeCidade);
   }
 
   @override
-  Future<List<ClimaModel>?> listarClimaSalvos(List<String?> nomeCidades) {
-    // TODO: implement listarClimaSalvos
-    throw UnimplementedError();
+  Future<List<ClimaModel?>> listarClimaSalvos(List<String?> nomeCidades) async {
+     return await apiService.getInstance.pegarClimaDiarioSalvo(nomeCidades);
   }
   
  }
