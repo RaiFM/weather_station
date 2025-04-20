@@ -1,4 +1,4 @@
-import 'package:weather_station/model/clima_model.dart';
+import 'package:weather_station/domain/model/clima_model.dart';
 
 abstract class IRepositoryApi {
   Future<List<ClimaModel?>> listarClimaNome(String nomeCidade);

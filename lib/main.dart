@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_station/service/api_service.dart';
+import 'package:weather_station/infra/service/api_service.dart';
 import 'firebase_options.dart';
 
  void  main() async {
