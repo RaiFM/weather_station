@@ -1,6 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_station/domain/model/clima_model.dart';
+import 'package:weather_station/infra/interfaces/i_repository_api.dart';
+import 'package:weather_station/infra/interfaces/i_repository_clima.dart';
+import 'package:weather_station/infra/repository/repository_api.dart';
+import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
 import 'package:weather_station/infra/service/api_service.dart';
 import 'package:weather_station/infra/service/clima_service.dart';
 import 'firebase_options.dart';
@@ -48,13 +53,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
-  ClimaService climaService = ClimaService(apiService: ApiService().getInstance).getInstance;
+  IRepositoryClima repositoryClima = RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService())));
   
 
 
 
   void _incrementCounter() {
-    climaService.listarCidades();
+   
     }
   void sla() async{
     Position? position = await Geolocator.getLastKnownPosition();

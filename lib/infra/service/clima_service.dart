@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/external/firestore_db.dart';
+import 'package:weather_station/infra/interfaces/i_repository_api.dart';
+import 'package:weather_station/infra/repository/repository_api.dart';
 import 'package:weather_station/infra/service/api_service.dart';
 
 class ClimaService {
   static ClimaService? _climaService;
-  final ApiService apiService;
+  final IRepositoryApi iRepositoryApi;
+
   ClimaService get getInstance {
-    _climaService ??= ClimaService(apiService: ApiService().getInstance);
+    _climaService ??= ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService()));
     return _climaService!;
   }
 
-  ClimaService({required this.apiService});
+  ClimaService({required this.iRepositoryApi});
   final db = FirestoreDB.getInstance;
 
   void salvarCidade(String nomeCidade) async {
@@ -54,8 +57,7 @@ class ClimaService {
         listaCidades.add(cidade);
       }
 
-      Future<List<ClimaModel?>> listaClima =
-          apiService.pegarClimaDiarioSalvo(listaCidades);
+      Future<List<ClimaModel?>> listaClima = iRepositoryApi.listarClimaSalvos(listaCidades);
 
       return listaClima;
     } else {
