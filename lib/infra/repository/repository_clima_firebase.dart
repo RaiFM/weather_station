@@ -8,16 +8,6 @@ class RepositoryClimaFirebase implements IRepositoryClima {
   RepositoryClimaFirebase({
     required this.climaService
   });
-  
-  @override
-  void deleteLastDay(String id) {
-  
-  }
-
-  @override
-  void insertLastDay(ClimaModel climaModel) {
-
-  }
 
   @override
   List<ClimaModel?> listarLugaresSalvos() {
