@@ -4,6 +4,13 @@ import 'package:weather_station/infra/service/api_service.dart';
 
 class RepositoryApi implements IRepositoryApi{
 
+    static RepositoryApi? _repositoryApi;
+
+    RepositoryApi get getInstance{
+      _repositoryApi ??= RepositoryApi(apiService: apiService.getInstance);
+      return _repositoryApi!;
+    }
+
   final ApiService apiService;
   RepositoryApi({required this.apiService});
 
@@ -18,8 +25,8 @@ class RepositoryApi implements IRepositoryApi{
   }
 
   @override
-  Future<List<ClimaModel?>> listarClimaSalvos(List<String?> nomeCidades) async {
-     return await apiService.getInstance.pegarClimaDiarioSalvo(nomeCidades);
+  Future<List<ClimaModel?>> listarClimaSalvos(List<String?> nomeCidade) async {
+     return await apiService.getInstance.pegarClimaDiarioSalvo(nomeCidade);
   }
   
  }
