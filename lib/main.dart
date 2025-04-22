@@ -48,13 +48,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
-  ClimaService climaService = ClimaService().getInstance;
+  ClimaService climaService = ClimaService(apiService: ApiService().getInstance).getInstance;
   
 
 
 
   void _incrementCounter() {
-    climaService.salvarCidade("Itapevi,SP");
+    climaService.listarCidades();
     }
   void sla() async{
     Position? position = await Geolocator.getLastKnownPosition();
