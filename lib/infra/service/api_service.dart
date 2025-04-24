@@ -99,10 +99,10 @@ class ApiService {
   }
 
   Future<List<ClimaModel?>> pegarClimaSemanalLatLon(String latLon) async {
-    String url = "$_linkApi$_apiKey&city_name=$latLon";
+    String url = "$_linkApi$_apiKey&$latLon";
     List<ClimaModel?> previsao = [];
 
-    List<ClimaModel?> previsaoReq = await _requisicaoApi(url, 7);
+    List<ClimaModel?> previsaoReq = await _requisicaoApi(url, 8);
     for (int i = 0; i < previsaoReq.length; i++) {
       previsao.add(previsaoReq[i]);
     }
