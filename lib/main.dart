@@ -44,8 +44,6 @@ class MyHomePage extends StatefulWidget {
    MyHomePage({super.key, required this.title});
 
   final String title;
-  final ApiService api = ApiService();
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -53,13 +51,35 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
-  IRepositoryClima repositoryClima = RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService())));
+  IRepositoryClima repositoryClima = RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance)));
   
 
 
 
-  void _incrementCounter() {
-   
+  void _incrementCounter() async {
+    List<ClimaModel?> teste = [];
+     teste = await repositoryClima.listarLugaresSalvos();
+  print('🌆 Nome: ${teste[0]!.nome}');
+print('📅 Data: ${teste[0]!.data}');
+print('🌡️ Temperatura: ${teste[0]!.temperatura}°C');
+print('🌤️ Descrição do Clima: ${teste[0]!.descriptionClima}');
+print('🗓️ Dia da Semana: ${teste[0]!.diaSemana}');
+print('⬆️ Temperatura Máxima: ${teste[0]!.tempMax}°C');
+print('⬇️ Temperatura Mínima: ${teste[0]!.tempMin}°C');
+print('🖼️ Ícone: ${teste[0]!.icone}');
+print('💧 Precipitação: ${teste[0]!.precipitacao} mm');
+print('💦 Umidade: ${teste[0]!.umidade}%');
+print('🌬️ Velocidade do Vento: ${teste[0]!.velocidadeVento}');
+print('🧭 Direção do Vento: ${teste[0]!.direcaoVento}°');
+print('🗺️ Vento Cardinal: ${teste[0]!.cardinalVento}');
+print('🌅 Nascer do Sol: ${teste[0]!.nascerSol}');
+print('🌇 Pôr do Sol: ${teste[0]!.porSol}');
+print('🌙 Fase da Lua: ${teste[0]!.faseLua}');
+print('🕓 Fuso Horário: ${teste[0]!.fusoHorario}');
+
+
+
+
     }
   void sla() async{
     Position? position = await Geolocator.getLastKnownPosition();
