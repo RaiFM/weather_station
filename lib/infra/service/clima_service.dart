@@ -10,7 +10,7 @@ class ClimaService {
   final IRepositoryApi iRepositoryApi;
 
   ClimaService get getInstance {
-    _climaService ??= ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService()));
+    _climaService ??= ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance));
     return _climaService!;
   }
 
