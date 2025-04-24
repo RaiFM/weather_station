@@ -18,7 +18,7 @@ class ListarLocaisPorLatLonUc {
   ListarLocaisPorLatLonUc({required this.iRepositoryApi});
   final IRepositoryApi iRepositoryApi;
 
-  Future<List<ClimaModel?>> buscarPorLatLon(int lat, int lon) async {
+  Future<List<ClimaModel?>> buscarPorLatLon(double lat, double lon) async {
     if (lat == 0.0 || lon == 0.0) {
       throw Exception("Latitude ou longitude inválidas.");
     }
