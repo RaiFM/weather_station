@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_station/domain/model/clima_model.dart';
+import 'package:weather_station/domain/usecase/excluir_cidade_uc.dart';
 import 'package:weather_station/infra/interfaces/i_repository_api.dart';
 import 'package:weather_station/infra/interfaces/i_repository_clima.dart';
 import 'package:weather_station/infra/repository/repository_api.dart';
 import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
+import 'package:weather_station/infra/service/api_cidades_service.dart';
 import 'package:weather_station/infra/service/api_service.dart';
 import 'package:weather_station/infra/service/clima_service.dart';
 import 'firebase_options.dart';
@@ -50,40 +52,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];  
-  IRepositoryClima repositoryClima = RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance)));
+  List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];
+  ApiCidadesService apiCidadesService =  ApiCidadesService();
+  ExcluirCidadeUc excluirCidadeUc = ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance;
   
+   var climaMock = ClimaModel(
+  nome: "Itapevi,SP",
+  diaSemana: "Qua",
+  temperatura: 22,
+  descriptionClima: "Céu limpo",
+  data: "24/04/2025",
+  tempMin: 18,
+  tempMax: 26,
+  icone: "sunny",
+  precipitacao: 0,
+  chanceChuva: 0, // se tiver esse campo no model
+  umidade: 60,
+  velocidadeVento: "4.2 km/h",
+  direcaoVento: 120,
+  cardinalVento: "SE",
+  nascerSol: "06:15 am",
+  porSol: "05:50 pm",
+  faseLua: "cheia",
+  fusoHorario: "-03:00",
+);
 
-
-
-  void _incrementCounter() async {
-    List<ClimaModel?> teste = [];
-     teste = await repositoryClima.listarLugaresSalvos();
-  print('🌆 Nome: ${teste[0]!.nome}');
-print('📅 Data: ${teste[0]!.data}');
-print('🌡️ Temperatura: ${teste[0]!.temperatura}°C');
-print('🌤️ Descrição do Clima: ${teste[0]!.descriptionClima}');
-print('🗓️ Dia da Semana: ${teste[0]!.diaSemana}');
-print('⬆️ Temperatura Máxima: ${teste[0]!.tempMax}°C');
-print('⬇️ Temperatura Mínima: ${teste[0]!.tempMin}°C');
-print('🖼️ Ícone: ${teste[0]!.icone}');
-print('💧 Precipitação: ${teste[0]!.precipitacao} mm');
-print('💦 Umidade: ${teste[0]!.umidade}%');
-print('🌬️ Velocidade do Vento: ${teste[0]!.velocidadeVento}');
-print('🧭 Direção do Vento: ${teste[0]!.direcaoVento}°');
-print('🗺️ Vento Cardinal: ${teste[0]!.cardinalVento}');
-print('🌅 Nascer do Sol: ${teste[0]!.nascerSol}');
-print('🌇 Pôr do Sol: ${teste[0]!.porSol}');
-print('🌙 Fase da Lua: ${teste[0]!.faseLua}');
-print('🕓 Fuso Horário: ${teste[0]!.fusoHorario}');
-
-
-
-
-    }
   void sla() async{
-    Position? position = await Geolocator.getLastKnownPosition();
-    print(position);
+ List<String> lista = await apiCidadesService.getMunicipios(21);   
+
+ print(lista.length);
   }
 
   @override
@@ -113,7 +110,7 @@ print('🕓 Fuso Horário: ${teste[0]!.fusoHorario}');
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: sla,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
