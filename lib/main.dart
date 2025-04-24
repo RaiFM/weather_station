@@ -1,8 +1,11 @@
+import 'dart:ffi';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/domain/usecase/excluir_cidade_uc.dart';
+import 'package:weather_station/domain/usecase/listar_locais_lat_lon_uc.dart';
 import 'package:weather_station/infra/interfaces/i_repository_api.dart';
 import 'package:weather_station/infra/interfaces/i_repository_clima.dart';
 import 'package:weather_station/infra/repository/repository_api.dart';
@@ -10,6 +13,7 @@ import 'package:weather_station/infra/repository/repository_clima_firebase.dart'
 import 'package:weather_station/infra/service/api_cidades_service.dart';
 import 'package:weather_station/infra/service/api_service.dart';
 import 'package:weather_station/infra/service/clima_service.dart';
+import 'package:weather_station/ui/controller/location_controller.dart';
 import 'firebase_options.dart';
 
  void  main() async {
@@ -54,7 +58,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];
   ApiCidadesService apiCidadesService =  ApiCidadesService();
-  ExcluirCidadeUc excluirCidadeUc = ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance;
+
+    ListarLocaisPorLatLonUc list = ListarLocaisPorLatLonUc(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance;
   
    var climaMock = ClimaModel(
   nome: "Itapevi,SP",
@@ -76,11 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
   faseLua: "cheia",
   fusoHorario: "-03:00",
 );
-
+  ClimaController climaController = ClimaController();
+    
   void sla() async{
- List<String> lista = await apiCidadesService.getMunicipios(21);   
-
- print(lista.length);
+ 
+ 
   }
 
   @override
