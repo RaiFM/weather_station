@@ -22,7 +22,11 @@ class ListarLocaisPorLatLonUc {
     if (lat == 0.0 || lon == 0.0) {
       throw Exception("Latitude ou longitude inválidas.");
     }
-    String latLon = lat.toString() + lon.toString();
+    
+    String latText = lat.toStringAsFixed(3);
+    String lonText = lon.toStringAsFixed(3);
+
+    String latLon = "lat=$latText&lon=$lonText";
     return await iRepositoryApi.listarClimaLatLong(latLon);
   }
 }
