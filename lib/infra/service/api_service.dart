@@ -23,23 +23,39 @@ class ApiService {
         var dados = json.decode(resposta.body);
         var cidade = dados["results"]["city"];
         var temperaturaAtual = dados["results"]["temp"];
+        var timeZone = dados["results"]["timezone"];
+        var direcaoVento = dados["results"]["wind_direction"];
+        var direcaoCardinal = dados["results"]["wind_cardinal"];
+
 
         var lista = dados["results"]["forecast"];
         for (var dia in lista) {
           ClimaModel clima = ClimaModel(
               nome: cidade,
               temperatura: temperaturaAtual,
+              fusoHorario: timeZone,
+              direcaoVento: direcaoVento,
+              cardinalVento: direcaoCardinal,
               data: dia["date"] ?? '',
               diaSemana: dia["weekday"] ?? '',
               descriptionClima: dia["description"] ?? '',
               tempMin: dia["min"] ?? 0,
               tempMax: dia["max"] ?? 0,
-              icone: dia["condition"] ?? '');
+              icone: dia["condition"] ?? '', 
+              precipitacao: dia['rain'] ?? 0, 
+              chanceChuva: dia['rain_probability'] ?? 0,
+              umidade:  dia['humidity'],
+              velocidadeVento: dia['wind_speedy'] ?? 0,
+              nascerSol: dia['sunrise'] ?? '',
+              porSol: dia['sunset'] ?? '',
+              faseLua: dia['moon_phase'] ?? '',
+              );
 
           if (previsao.length == dias) break;
 
           previsao.add(clima);
         }
+        print(previsao.length);
         return previsao;
       } else {
         Exception("Erro ao fazer requisição de clima ");
