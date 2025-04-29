@@ -1,0 +1,6 @@
+{
+  "climaSlug": "Sunny without Clouds",
+  "@climaSlug": {
+    "description": "The short description of outside weather."
+  }
+}
