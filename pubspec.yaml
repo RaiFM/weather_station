@@ -40,6 +40,10 @@ dependencies:
   http: ^0.13.6
   cloud_firestore: ^5.6.6
   provider: ^6.1.1
+  google_fonts: ^4.0.4
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -57,12 +61,15 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+  assets:
+   - assets/images/skycloudy.jpg
 
+  uses-material-design: true
+  
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
