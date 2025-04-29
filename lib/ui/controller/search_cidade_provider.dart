@@ -16,7 +16,10 @@ class SearchCidadeProvider extends ChangeNotifier {
   List<String?> get allClimas => _allCidades;
 
   Future<List<String?>> pesquisarNome(int uf) async {
-    return _allCidades = await listarNomeCidadesUc.getInstance.listar(uf);
+    _allCidades = [];
+    _allCidades = await listarNomeCidadesUc.getInstance.listar(uf);
+    notify();
+    return _allCidades ;
   } 
 
 }
