@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
     faseLua: "cheia",
     fusoHorario: "-03:00",
   );
-  ClimaController climaController = ClimaController();
+  LocationController climaController = LocationController();
 
   void sla() async {}
 
