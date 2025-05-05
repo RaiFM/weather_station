@@ -39,23 +39,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => ClimaProvider(
-                listarLocaisPorLatLonUc: ListarLocaisPorLatLonUc(
-                        iRepositoryApi:
-                            RepositoryApi(apiService: ApiService().getInstance)
-                                .getInstance)
-                    .getInstance,
-                listarLocaisPorNomeUc:
-                    ListarLocaisPorNomeUc(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance)
-                        .getInstance,
-                listarLocaisSalvosUc: ListarLocaisSalvosUc(
-                        iRepositoryClima: RepositoryClimaFirebase(
-                                climaService:
-                                    ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance)
-                            .getInstance)
-                    .getInstance,
-                excluirCidadeUc: ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance,
-                salvarCidadeUc: SalvarCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance)),
+            create: (_) => ClimaProvider()),
         ChangeNotifierProvider(
             create: (_) => SearchCidadeProvider(
                 listarNomeCidadesUc: ListarNomeCidadesUc(
