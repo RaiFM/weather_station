@@ -55,7 +55,7 @@ class ApiService {
 
           previsao.add(clima);
         }
-        print(previsao.length);
+
         return previsao;
       } else {
         Exception("Erro ao fazer requisição de clima ");
