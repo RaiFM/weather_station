@@ -19,13 +19,25 @@ class WeatherHomePage extends StatefulWidget {
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   List<ClimaModel?> previsaoResults = [];
-  @override
-  void initState() async {
-    super.initState();
+  late Position location;
+
+  getPosition() async {
     LocationController locationController = LocationController();
-    Position location = await locationController.posicaoAtual();
+    location = await locationController.posicaoAtual();
+    return location;
+  }
+  
+  getResults() async {
     ClimaProvider cp = ClimaProvider();
+    location = getPosition();
     previsaoResults = await cp.getClimaLatLon(location.latitude, location.longitude);
+    return previsaoResults;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    previsaoResults = getResults();
   }
 
   @override
