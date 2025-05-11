@@ -5,11 +5,6 @@ import 'package:weather_station/domain/usecase/listar_locais_lat_lon_uc.dart';
 import 'package:weather_station/domain/usecase/listar_locais_nome_uc.dart.dart';
 import 'package:weather_station/domain/usecase/listar_locais_salvos_uc.dart';
 import 'package:weather_station/domain/usecase/salvar_cidade_uc.dart';
-import 'package:weather_station/infra/interfaces/i_repository_api.dart';
-import 'package:weather_station/infra/repository/repository_api.dart';
-import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
-import 'package:weather_station/infra/service/api_service.dart';
-import 'package:weather_station/infra/service/clima_service.dart';
 
 class ClimaProvider extends ChangeNotifier {
   static ClimaProvider? _climaProvider;
@@ -65,12 +60,12 @@ class ClimaProvider extends ChangeNotifier {
   }
 
   void deletarClima(ClimaModel climaModel) {
-    excluirCidadeUc!.excluir(climaModel);
+    excluirCidadeUc.excluir(climaModel);
     notify();
   }
 
   void salvarCidade(ClimaModel climaModel) {
-    salvarCidadeUc!.salvar(climaModel);
+    salvarCidadeUc.salvar(climaModel);
     notify();
   }
 }

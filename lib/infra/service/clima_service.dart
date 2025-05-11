@@ -3,7 +3,7 @@ import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/external/firestore_db.dart';
 import 'package:weather_station/infra/interfaces/i_repository_api.dart';
 import 'package:weather_station/infra/repository/repository_api.dart';
-import 'package:weather_station/infra/service/api_service.dart';
+
 
 class ClimaService {
   static ClimaService? _climaService;

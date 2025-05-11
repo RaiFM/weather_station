@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_station/domain/model/clima_model.dart' show ClimaModel;
-import 'package:weather_station/infra/service/api_service.dart';
 import 'package:weather_station/ui/controller/clima_provider.dart';
 import 'package:weather_station/ui/controller/location_controller.dart';
-import 'package:weather_station/ui/widgets/daily_forecast.dart'
-    show DailyForecast;
 import 'package:weather_station/ui/widgets/hourly_forecast.dart'
     show HourlyForecast, HourlyForecastList;
 
