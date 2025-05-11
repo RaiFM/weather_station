@@ -27,7 +27,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
   
   void getResults() async {
-    ClimaProvider cp = ClimaProvider();
+    ClimaProvider cp = ClimaProvider.getInstance;
     location = await getPosition();
     previsaoResults = await cp.getClimaLatLon(location.latitude, location.longitude);
   }

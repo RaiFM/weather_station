@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class ApiCidadesService {
   static ApiCidadesService? _apiCidadesService;
 
-  ApiCidadesService get getInstance {
+  static ApiCidadesService get getInstance {
     _apiCidadesService ??= ApiCidadesService();
     return _apiCidadesService!;
   }

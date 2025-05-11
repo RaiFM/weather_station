@@ -88,10 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];
   ApiCidadesService apiCidadesService = ApiCidadesService();
 
-  ListarLocaisPorLatLonUc list = ListarLocaisPorLatLonUc(
-          iRepositoryApi:
-              RepositoryApi(apiService: ApiService().getInstance).getInstance)
-      .getInstance;
+  ListarLocaisPorLatLonUc list = ListarLocaisPorLatLonUc.getInstance;
 
   var climaMock = ClimaModel(
     nome: "Itapevi,SP",
@@ -113,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
     faseLua: "cheia",
     fusoHorario: "-03:00",
   );
-  ClimaController climaController = ClimaController();
+  ClimaProvider climaController = ClimaProvider.getInstance;
 
   void sla() async {}
 
