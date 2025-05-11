@@ -31,13 +31,33 @@ class RepositoryClimaFirebase implements IRepositoryClima {
 
   @override
   void salvarCidade(ClimaModel climaModel) {
+     final cidadeMap = <String, dynamic>{
+    'nome': climaModel.nome ,
+    'diaSemana': climaModel.diaSemana,
+    'temperatura': climaModel.temperatura,
+    'descriptionClima': climaModel.descriptionClima,
+    'data': climaModel.data,
+    'tempMin': climaModel.tempMin,
+    'tempMax': climaModel.tempMax,
+    'icone': climaModel.icone,
+    'umidade': climaModel.umidade,
+    'chanceChuva': climaModel.chanceChuva,
+    'precipitacao': climaModel.precipitacao,
+    'velocidadeVento': climaModel.velocidadeVento,
+    'direcaoVento': climaModel.direcaoVento,
+    'cardinalVento': climaModel.cardinalVento,
+    'nascerSol': climaModel.nascerSol,
+    'porSol': climaModel.porSol,
+    'faseLua': climaModel.faseLua,
+    'fusoHorario': climaModel.fusoHorario,
+  };
     try {
-      String nome = climaModel.nome;
-      climaService.salvarCidade(nome);
+      climaService.salvarCidade(cidadeMap, climaModel.nome);
     } catch (e) {
       Exception("Erro ao excluir cidade");
     }
   }
+  
 
   @override
   void excluirCidade(ClimaModel climaModel) {
