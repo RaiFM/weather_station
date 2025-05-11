@@ -17,14 +17,11 @@ class ClimaService {
   ClimaService({required this.iRepositoryApi});
   final db = FirestoreDB.getInstance;
 
-  void salvarCidade(String nomeCidade) async {
-    final cidadeMap = <String, String>{
-      nomeCidade: nomeCidade,
-    };
+  void salvarCidade(Map<String, dynamic> climaAtual, String name) async {
 
     try {
-      await db.collection("climaAPP").doc("cidades").set(
-            cidadeMap,
+      await db.collection("climaAPP").doc(name).set(
+            climaAtual,
             SetOptions(merge: true),
           );
 
