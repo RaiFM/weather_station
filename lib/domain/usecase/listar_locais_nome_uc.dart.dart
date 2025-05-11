@@ -1,17 +1,13 @@
 import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/infra/interfaces/i_repository_api.dart';
 import 'package:weather_station/infra/repository/repository_api.dart';
-import 'package:weather_station/infra/service/api_service.dart';
+
 
 class ListarLocaisPorNomeUc {
   static ListarLocaisPorNomeUc? _listarLocaisPorNomeUc;
 
-  ListarLocaisPorNomeUc get getInstance {
-    _listarLocaisPorNomeUc ??= ListarLocaisPorNomeUc(
-      iRepositoryApi: RepositoryApi(
-        apiService: ApiService().getInstance,
-      ).getInstance,
-    );
+  static ListarLocaisPorNomeUc get getInstance {
+    _listarLocaisPorNomeUc ??= ListarLocaisPorNomeUc(iRepositoryApi:  RepositoryApi.getInstance);
     return _listarLocaisPorNomeUc!;
   }
 

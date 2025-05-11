@@ -1,14 +1,11 @@
-
 import 'package:weather_station/infra/interfaces/i_repository_cidade_api.dart';
 import 'package:weather_station/infra/repository/repository_cidade_api.dart';
-import 'package:weather_station/infra/service/api_cidades_service.dart';
-
 
 class ListarNomeCidadesUc {
   static ListarNomeCidadesUc? _listarNomeCidadesUc;
 
-  ListarNomeCidadesUc get getInstance {
-    _listarNomeCidadesUc ??= ListarNomeCidadesUc(repositoryCidadeApi: RepositoryCidadeApi(apiCidadesService: ApiCidadesService().getInstance).getInstance);
+  static ListarNomeCidadesUc get getInstance {
+    _listarNomeCidadesUc ??= ListarNomeCidadesUc(repositoryCidadeApi: RepositoryCidadeApi.getInstance);
     return _listarNomeCidadesUc!;
   }
 

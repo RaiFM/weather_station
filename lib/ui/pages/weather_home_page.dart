@@ -4,10 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_station/domain/model/clima_model.dart' show ClimaModel;
 import 'package:weather_station/ui/controller/clima_provider.dart';
 import 'package:weather_station/ui/controller/location_controller.dart';
-import 'package:weather_station/ui/widgets/daily_forecast.dart'
-    show DailyForecast;
 import 'package:weather_station/ui/widgets/hourly_forecast.dart'
-    show HourlyForecast;
+    show HourlyForecast, HourlyForecastList;
 
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
@@ -17,7 +15,25 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-  final LocationController locationController = LocationController();
+  late List<ClimaModel?> previsaoResults;
+  late Position location;
+
+  Future<Position> getPosition() async {
+    LocationController locationController = LocationController();
+    return await locationController.posicaoAtual();
+  }
+  
+  void getResults() async {
+    ClimaProvider cp = ClimaProvider.getInstance;
+    location = await getPosition();
+    previsaoResults = await cp.getClimaLatLon(location.latitude, location.longitude);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getResults();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,25 +82,25 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text("CIDADE",
+                          Text("${previsaoResults[0]?.nome}",
                               style: GoogleFonts.robotoFlex(
                                   fontSize: 50,
                                   fontWeight: FontWeight.w100,
                                   letterSpacing: 6)),
                           const SizedBox(height: 8),
-                          Text("20ºC",
+                          Text("${previsaoResults[0]?.temperatura}",
                               style: GoogleFonts.robotoFlex(
                                   fontSize: 95,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2)),
                           const SizedBox(height: 8),
-                          Text("{{maximo e minimo}}",
+                          Text("${previsaoResults[0]?.tempMin}°C - ${previsaoResults[0]?.tempMax}°C",
                               style: GoogleFonts.ubuntuCondensed(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 2)),
                           const SizedBox(height: 8),
-                          Text("{{clima_slug}}",
+                          Text("${previsaoResults[0]?.descriptionClima}",
                               style: GoogleFonts.ubuntuCondensed(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w100,
@@ -96,174 +112,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   const SizedBox(height: 32),
                   SizedBox(
                     height: 100,
-                    child: ListView(
-                      semanticChildCount: 24,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ScrollPhysics(),
-                      children: const [
-                        HourlyForecast(
-                            hour: "1 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "2 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "3 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "4 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "5 AM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "6 AM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "7 AM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "8 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "9 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "10 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "11 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "12 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "13 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "14 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "15 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "16 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "17 PM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "18 PM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "19 PM",
-                            temp: "13°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "20 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "21 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "22 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "23 PM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                        HourlyForecast(
-                            hour: "00 AM",
-                            temp: "14°",
-                            icon: Icons.nightlight,
-                            chance: "0%"),
-                      ],
+                    child: HourlyForecastList(previsaoReq: previsaoResults)
                     ),
-                  ),
-                  const Center(child: Divider(height: 32)),
-                  const DailyForecast(
-                      day: "Today",
-                      icon: Icons.wb_sunny,
-                      chance: "0%",
-                      high: "22°",
-                      low: "12°"),
-                  const DailyForecast(
-                      day: "Tuesday",
-                      icon: Icons.cloud,
-                      chance: "11%",
-                      high: "21°",
-                      low: "15°"),
-                  const DailyForecast(
-                      day: "Wednesday",
-                      icon: Icons.cloud,
-                      chance: "0%",
-                      high: "20°",
-                      low: "12°"),
-                  const DailyForecast(
-                      day: "Thursday",
-                      icon: Icons.cloud,
-                      chance: "19%",
-                      high: "18°",
-                      low: "13°"),
-                  const DailyForecast(
-                      day: "Friday",
-                      icon: Icons.cloudy_snowing,
-                      chance: "59%",
-                      high: "16°",
-                      low: "11°"),
-                  const DailyForecast(
-                      day: "Saturday",
-                      icon: Icons.cloudy_snowing,
-                      chance: "42%",
-                      high: "16°",
-                      low: "9°"),
-                ],
-              ),
+                    const Center(child: Divider(height: 32)),
+                  ]),
+                  
             ),
           ),
         ),

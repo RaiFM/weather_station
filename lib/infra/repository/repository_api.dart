@@ -6,8 +6,8 @@ class RepositoryApi implements IRepositoryApi{
 
     static RepositoryApi? _repositoryApi;
 
-    RepositoryApi get getInstance{
-      _repositoryApi ??= RepositoryApi(apiService: apiService.getInstance);
+  static  RepositoryApi get getInstance{
+      _repositoryApi ??= RepositoryApi(apiService: ApiService.getInstance);
       return _repositoryApi!;
     }
 
@@ -16,17 +16,17 @@ class RepositoryApi implements IRepositoryApi{
 
   @override
   Future<List<ClimaModel?>> listarClimaLatLong(String latLon) async {
-   return await apiService.getInstance.pegarClimaSemanalLatLon(latLon);
+   return await apiService.pegarClimaSemanalLatLon(latLon);
   }
   
   @override
   Future<List<ClimaModel?>> listarClimaNome(String nomeCidade) async{
-   return await apiService.getInstance.pegarClimaSemanalNome(nomeCidade);
+   return await apiService.pegarClimaSemanalNome(nomeCidade);
   }
 
   @override
   Future<List<ClimaModel?>> listarClimaSalvos(List<String?> nomeCidade) async {
-     return await apiService.getInstance.pegarClimaDiarioSalvo(nomeCidade);
+     return await apiService.pegarClimaDiarioSalvo(nomeCidade);
   }
   
  }

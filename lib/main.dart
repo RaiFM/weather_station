@@ -3,20 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_station/domain/model/clima_model.dart';
-import 'package:weather_station/domain/usecase/excluir_cidade_uc.dart';
 import 'package:weather_station/domain/usecase/listar_locais_lat_lon_uc.dart';
-import 'package:weather_station/domain/usecase/listar_locais_nome_uc.dart.dart';
-import 'package:weather_station/domain/usecase/listar_locais_salvos_uc.dart';
-import 'package:weather_station/domain/usecase/listar_nome_cidades_uc.dart';
-import 'package:weather_station/domain/usecase/salvar_cidade_uc.dart';
-import 'package:weather_station/infra/repository/repository_api.dart';
-import 'package:weather_station/infra/repository/repository_cidade_api.dart';
-import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
 import 'package:weather_station/infra/service/api_cidades_service.dart';
-import 'package:weather_station/infra/service/api_service.dart';
-import 'package:weather_station/infra/service/clima_service.dart';
 import 'package:weather_station/ui/controller/clima_provider.dart';
-import 'package:weather_station/ui/controller/location_controller.dart';
 import 'package:weather_station/ui/controller/search_cidade_provider.dart';
 import 'package:weather_station/ui/pages/weather_home_page.dart';
 import 'firebase_options.dart';
@@ -38,31 +27,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => ClimaProvider(
-                listarLocaisPorLatLonUc: ListarLocaisPorLatLonUc(
-                        iRepositoryApi:
-                            RepositoryApi(apiService: ApiService().getInstance)
-                                .getInstance)
-                    .getInstance,
-                listarLocaisPorNomeUc:
-                    ListarLocaisPorNomeUc(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance)
-                        .getInstance,
-                listarLocaisSalvosUc: ListarLocaisSalvosUc(
-                        iRepositoryClima: RepositoryClimaFirebase(
-                                climaService:
-                                    ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance)
-                            .getInstance)
-                    .getInstance,
-                excluirCidadeUc: ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance,
-                salvarCidadeUc: SalvarCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance).getInstance)),
+            create: (_) => ClimaProvider.getInstance),
         ChangeNotifierProvider(
-            create: (_) => SearchCidadeProvider(
-                listarNomeCidadesUc: ListarNomeCidadesUc(
-                        repositoryCidadeApi: RepositoryCidadeApi(
-                                apiCidadesService:
-                                    ApiCidadesService().getInstance)
-                            .getInstance)
-                    .getInstance))
+            create: (_) => SearchCidadeProvider.getInstance)
       ],
       child: MaterialApp(
         locale: const Locale('es'),
@@ -109,10 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> lista = ["Sorocaba,SP", "Itapevi,SP"];
   ApiCidadesService apiCidadesService = ApiCidadesService();
 
-  ListarLocaisPorLatLonUc list = ListarLocaisPorLatLonUc(
-          iRepositoryApi:
-              RepositoryApi(apiService: ApiService().getInstance).getInstance)
-      .getInstance;
+  ListarLocaisPorLatLonUc list = ListarLocaisPorLatLonUc.getInstance;
 
   var climaMock = ClimaModel(
     nome: "Itapevi,SP",
@@ -134,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     faseLua: "cheia",
     fusoHorario: "-03:00",
   );
-  LocationController climaController = LocationController();
+  ClimaProvider climaController = ClimaProvider.getInstance;
 
   void sla() async {}
 
