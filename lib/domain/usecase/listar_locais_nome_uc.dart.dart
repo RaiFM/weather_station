@@ -6,12 +6,8 @@ import 'package:weather_station/infra/service/api_service.dart';
 class ListarLocaisPorNomeUc {
   static ListarLocaisPorNomeUc? _listarLocaisPorNomeUc;
 
-  ListarLocaisPorNomeUc get getInstance {
-    _listarLocaisPorNomeUc ??= ListarLocaisPorNomeUc(
-      iRepositoryApi: RepositoryApi(
-        apiService: ApiService().getInstance,
-      ).getInstance,
-    );
+  static ListarLocaisPorNomeUc get getInstance {
+    _listarLocaisPorNomeUc ??= ListarLocaisPorNomeUc.getInstance;
     return _listarLocaisPorNomeUc!;
   }
 

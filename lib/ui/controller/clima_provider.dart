@@ -12,19 +12,29 @@ import 'package:weather_station/infra/service/api_service.dart';
 import 'package:weather_station/infra/service/clima_service.dart';
 
 class ClimaProvider extends ChangeNotifier {
+  static ClimaProvider? _climaProvider;
+
+  static ClimaProvider get getInstance {
+    _climaProvider ??= ClimaProvider(excluirCidadeUc: ExcluirCidadeUc.getInstance, listarLocaisPorNomeUc: ListarLocaisPorNomeUc.getInstance, listarLocaisPorLatLonUc: ListarLocaisPorLatLonUc.getInstance, listarLocaisSalvosUc: ListarLocaisSalvosUc.getInstance, salvarCidadeUc: SalvarCidadeUc.getInstance);
+    return _climaProvider!;
+  }
 
   void notify() {
     notifyListeners();
   }
 
-  ListarLocaisPorLatLonUc listarLocaisPorLatLonUc = ListarLocaisPorLatLonUc(iRepositoryApi: RepositoryApi(apiService: ApiService()));
-  ListarLocaisPorNomeUc listarLocaisPorNomeUc = ListarLocaisPorNomeUc(iRepositoryApi: RepositoryApi(apiService: ApiService()));
-  ListarLocaisSalvosUc listarLocaisSalvosUc = ListarLocaisSalvosUc(iRepositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService()))));
+  ListarLocaisPorLatLonUc listarLocaisPorLatLonUc;
+  ListarLocaisPorNomeUc listarLocaisPorNomeUc;
+  ListarLocaisSalvosUc listarLocaisSalvosUc;
+  ExcluirCidadeUc excluirCidadeUc;
+  SalvarCidadeUc salvarCidadeUc;
 
-  ExcluirCidadeUc? excluirCidadeUc;
-  SalvarCidadeUc? salvarCidadeUc;
-
-  ClimaProvider([this.excluirCidadeUc, this.salvarCidadeUc]);
+  ClimaProvider(
+      {required this.excluirCidadeUc,
+      required this.listarLocaisPorLatLonUc,
+      required this.listarLocaisPorNomeUc,
+      required this.listarLocaisSalvosUc,
+      required this.salvarCidadeUc});
 
   List<ClimaModel?> _allClimaPrincipal = [];
   List<ClimaModel?> _allClimaSalvos = [];
@@ -33,34 +43,34 @@ class ClimaProvider extends ChangeNotifier {
   List<ClimaModel?> get allClimasSalvos => _allClimaSalvos;
 
   Future<List<ClimaModel?>> getClimaLatLon(double lat, double lon) async {
-  _allClimaPrincipal = [];
-  _allClimaPrincipal = await listarLocaisPorLatLonUc.getInstance.buscarPorLatLon(lat, lon);
-  notify();
-  return _allClimaPrincipal;
-}
+    _allClimaPrincipal = [];
+    _allClimaPrincipal =
+        await listarLocaisPorLatLonUc.buscarPorLatLon(lat, lon);
+    notify();
+    return _allClimaPrincipal;
+  }
 
-Future<List<ClimaModel?>> getClimaNome(String nome) async {
-  _allClimaPrincipal = [];
-  _allClimaPrincipal = await listarLocaisPorNomeUc.getInstance.buscarPorNome(nome);
-  notify();
-  return _allClimaPrincipal;
-}
+  Future<List<ClimaModel?>> getClimaNome(String nome) async {
+    _allClimaPrincipal = [];
+    _allClimaPrincipal = await listarLocaisPorNomeUc.buscarPorNome(nome);
+    notify();
+    return _allClimaPrincipal;
+  }
 
-Future<List<ClimaModel?>> getClimaSalvos() async {
-  _allClimaSalvos = [];
-  _allClimaSalvos = await listarLocaisSalvosUc.getInstance.buscar();
-  notify();
-  return _allClimaSalvos;
-}
+  Future<List<ClimaModel?>> getClimaSalvos() async {
+    _allClimaSalvos = [];
+    _allClimaSalvos = await listarLocaisSalvosUc.buscar();
+    notify();
+    return _allClimaSalvos;
+  }
 
-void deletarClima(ClimaModel climaModel) {
-  excluirCidadeUc!.getInstance.excluir(climaModel);
-  notify();
-}
+  void deletarClima(ClimaModel climaModel) {
+    excluirCidadeUc!.excluir(climaModel);
+    notify();
+  }
 
-void salvarCidade(ClimaModel climaModel) {
-  salvarCidadeUc!.getInstance.salvar(climaModel);
-  notify();
-}
-
+  void salvarCidade(ClimaModel climaModel) {
+    salvarCidadeUc!.salvar(climaModel);
+    notify();
+  }
 }

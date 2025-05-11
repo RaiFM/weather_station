@@ -8,8 +8,8 @@ import 'package:weather_station/infra/service/clima_service.dart';
 class ExcluirCidadeUc {
   static ExcluirCidadeUc? _excluirCidadeUc;
 
-  ExcluirCidadeUc get getInstance{
-    _excluirCidadeUc ??= ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase(climaService: ClimaService(iRepositoryApi: RepositoryApi(apiService: ApiService().getInstance).getInstance).getInstance).getInstance);
+  static ExcluirCidadeUc get getInstance{
+    _excluirCidadeUc ??= ExcluirCidadeUc(repositoryClima: RepositoryClimaFirebase.getInstance);
     return _excluirCidadeUc!;
   }
 

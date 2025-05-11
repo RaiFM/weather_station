@@ -39,15 +39,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => ClimaProvider()),
+            create: (_) => ClimaProvider.getInstance),
         ChangeNotifierProvider(
-            create: (_) => SearchCidadeProvider(
-                listarNomeCidadesUc: ListarNomeCidadesUc(
-                        repositoryCidadeApi: RepositoryCidadeApi(
-                                apiCidadesService:
-                                    ApiCidadesService().getInstance)
-                            .getInstance)
-                    .getInstance))
+            create: (_) => SearchCidadeProvider.getInstance)
       ],
       child: MaterialApp(
         locale: const Locale('es'),
@@ -119,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
     faseLua: "cheia",
     fusoHorario: "-03:00",
   );
-  LocationController climaController = LocationController();
+  ClimaController climaController = ClimaController();
 
   void sla() async {}
 

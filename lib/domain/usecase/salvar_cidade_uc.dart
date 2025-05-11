@@ -8,15 +8,9 @@ import 'package:weather_station/infra/service/clima_service.dart';
 class SalvarCidadeUc {
   static SalvarCidadeUc? _salvarCidadeUc;
 
-  SalvarCidadeUc get getInstance {
+  static SalvarCidadeUc get getInstance {
     _salvarCidadeUc ??= SalvarCidadeUc(
-      repositoryClima: RepositoryClimaFirebase(
-        climaService: ClimaService(
-          iRepositoryApi: RepositoryApi(
-            apiService: ApiService().getInstance,
-          ).getInstance,
-        ).getInstance,
-      ).getInstance,
+      repositoryClima: RepositoryClimaFirebase.getInstance,
     );
     return _salvarCidadeUc!;
   }

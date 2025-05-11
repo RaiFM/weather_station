@@ -5,7 +5,7 @@ import 'package:weather_station/domain/model/clima_model.dart';
 class ApiService {
   static ApiService? _apiService;
 
-  ApiService get getInstance {
+ static ApiService get getInstance {
     _apiService ??= ApiService();
     return _apiService!;
   }

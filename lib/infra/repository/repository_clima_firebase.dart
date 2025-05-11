@@ -5,9 +5,9 @@ import 'package:weather_station/infra/service/clima_service.dart';
 class RepositoryClimaFirebase implements IRepositoryClima {
   static RepositoryClimaFirebase? _repositoryClimaFirebase;
 
-  RepositoryClimaFirebase get getInstance {
+  static  RepositoryClimaFirebase get getInstance {
     _repositoryClimaFirebase ??= RepositoryClimaFirebase(
-        climaService: climaService.getInstance);
+        climaService: ClimaService.getInstance);
     return _repositoryClimaFirebase!;
   }
 
