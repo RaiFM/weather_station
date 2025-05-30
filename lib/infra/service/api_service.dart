@@ -5,7 +5,7 @@ import 'package:weather_station/domain/model/clima_model.dart';
 class ApiService {
   static ApiService? _apiService;
 
- static ApiService get getInstance {
+  static ApiService get getInstance {
     _apiService ??= ApiService();
     return _apiService!;
   }
@@ -27,29 +27,28 @@ class ApiService {
         var direcaoVento = dados["results"]["wind_direction"];
         var direcaoCardinal = dados["results"]["wind_cardinal"];
 
-
         var lista = dados["results"]["forecast"];
         for (var dia in lista) {
           ClimaModel clima = ClimaModel(
-              nome: cidade,
-              temperatura: temperaturaAtual,
-              fusoHorario: timeZone,
-              direcaoVento: direcaoVento,
-              cardinalVento: direcaoCardinal,
-              data: dia["date"] ?? '',
-              diaSemana: dia["weekday"] ?? '',
-              descriptionClima: dia["description"] ?? '',
-              tempMin: dia["min"] ?? 0,
-              tempMax: dia["max"] ?? 0,
-              icone: dia["condition"] ?? '', 
-              precipitacao: dia['rain'] ?? 0, 
-              chanceChuva: dia['rain_probability'] ?? 0,
-              umidade:  dia['humidity'],
-              velocidadeVento: dia['wind_speedy'] ?? 0,
-              nascerSol: dia['sunrise'] ?? '',
-              porSol: dia['sunset'] ?? '',
-              faseLua: dia['moon_phase'] ?? '',
-              );
+            nome: cidade,
+            temperatura: temperaturaAtual,
+            fusoHorario: timeZone,
+            direcaoVento: direcaoVento,
+            cardinalVento: direcaoCardinal,
+            data: dia["date"] ?? '',
+            diaSemana: dia["weekday"] ?? '',
+            descriptionClima: dia["description"] ?? '',
+            tempMin: dia["min"] ?? 0,
+            tempMax: dia["max"] ?? 0,
+            icone: dia["condition"] ?? '',
+            precipitacao: dia['rain'] ?? 0,
+            chanceChuva: dia['rain_probability'] ?? 0,
+            umidade: dia['humidity'],
+            velocidadeVento: dia['wind_speedy'] ?? 0,
+            nascerSol: dia['sunrise'] ?? '',
+            porSol: dia['sunset'] ?? '',
+            faseLua: dia['moon_phase'] ?? '',
+          );
 
           if (previsao.length == dias) break;
 
@@ -58,17 +57,15 @@ class ApiService {
 
         return previsao;
       } else {
-        Exception("Erro ao fazer requisição de clima ");
-        return [];
+        throw Exception("Erro ao fazer requisição de clima ");
       }
     } catch (e) {
-      Exception("Erro ao fazer requisição de clima ");
-      print("Erro: $e");
-      return [];
+      throw Exception("Erro ao fazer requisição de clima ");
     }
   }
 
-  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(List<String?> cidadesSalvas) async {
+  Future<List<ClimaModel?>> pegarClimaDiarioSalvo(
+      List<String?> cidadesSalvas) async {
     String? nomeCidade = "";
     String url = "$_linkApi$_apiKey&city_name=";
     List<ClimaModel?> previsao = [];
