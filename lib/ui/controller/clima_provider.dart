@@ -10,7 +10,12 @@ class ClimaProvider extends ChangeNotifier {
   static ClimaProvider? _climaProvider;
 
   static ClimaProvider get getInstance {
-    _climaProvider ??= ClimaProvider(excluirCidadeUc: ExcluirCidadeUc.getInstance, listarLocaisPorNomeUc: ListarLocaisPorNomeUc.getInstance, listarLocaisPorLatLonUc: ListarLocaisPorLatLonUc.getInstance, listarLocaisSalvosUc: ListarLocaisSalvosUc.getInstance, salvarCidadeUc: SalvarCidadeUc.getInstance);
+    _climaProvider ??= ClimaProvider(
+        excluirCidadeUc: ExcluirCidadeUc.getInstance,
+        listarLocaisPorNomeUc: ListarLocaisPorNomeUc.getInstance,
+        listarLocaisPorLatLonUc: ListarLocaisPorLatLonUc.getInstance,
+        listarLocaisSalvosUc: ListarLocaisSalvosUc.getInstance,
+        salvarCidadeUc: SalvarCidadeUc.getInstance);
     return _climaProvider!;
   }
 
@@ -31,32 +36,47 @@ class ClimaProvider extends ChangeNotifier {
       required this.listarLocaisSalvosUc,
       required this.salvarCidadeUc});
 
+  //Estados privados de Carregamento & Mensagens de Erro
+  bool _isLoadingPrincipal = false; 
+  bool _isLoadingSalvos = false; 
+  String? _errorMessagePrincipal; 
+  String? _errorMessageSalvos; 
+
+  // Getters para acessar o estado privado do ViewModel pela View
+  bool get isLoadingPrincipal => _isLoadingPrincipal;
+  bool get isLoadingSalvos => _isLoadingSalvos;
+  String? get errorMessagePrincipal => _errorMessagePrincipal;
+  String? get errorMessageSalvos => _errorMessageSalvos;
+
+  //Listas privadas observadas pelos get's
   List<ClimaModel?> _allClimaPrincipal = [];
   List<ClimaModel?> _allClimaSalvos = [];
 
+  //Getters capturados pelos Consumer's e Selector's, pela UI
   List<ClimaModel?> get allClimas => _allClimaPrincipal;
   List<ClimaModel?> get allClimasSalvos => _allClimaSalvos;
 
-  Future<List<ClimaModel?>> getClimaLatLon(double lat, double lon) async {
+  //Capturar clima por meio de lat, long
+  Future<void> getClimaLatLon(double lat, double lon) async {
     _allClimaPrincipal = [];
-    _allClimaPrincipal =
-        await listarLocaisPorLatLonUc.buscarPorLatLon(lat, lon);
+    final result = await listarLocaisPorLatLonUc.buscarPorLatLon(lat, lon);
+    _allClimaPrincipal = result;
     notify();
-    return _allClimaPrincipal;
   }
 
-  Future<List<ClimaModel?>> getClimaNome(String nome) async {
+  //Capturar clima por meio de nome
+  Future<void> getClimaNome(String nome) async {
     _allClimaPrincipal = [];
-    _allClimaPrincipal = await listarLocaisPorNomeUc.buscarPorNome(nome);
+    final result = await listarLocaisPorNomeUc.buscarPorNome(nome);
+    _allClimaPrincipal = result;
     notify();
-    return _allClimaPrincipal;
   }
 
-  Future<List<ClimaModel?>> getClimaSalvos() async {
+  Future<void> getClimaSalvos() async {
     _allClimaSalvos = [];
-    _allClimaSalvos = await listarLocaisSalvosUc.buscar();
+    final result = await listarLocaisSalvosUc.buscar();
+    _allClimaSalvos =  result;
     notify();
-    return _allClimaSalvos;
   }
 
   void deletarClima(ClimaModel climaModel) {
