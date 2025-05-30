@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_station/domain/model/clima_model.dart' show ClimaModel;
 import 'package:weather_station/ui/controller/clima_provider.dart';
 import 'package:weather_station/ui/controller/location_controller.dart';
-import 'package:weather_station/ui/widgets/hourly_forecast.dart'
-    show HourlyForecast, HourlyForecastList;
+import 'package:weather_station/ui/widgets/sunriseset_forecast.dart';
+import 'package:weather_station/ui/widgets/weekly_forecast.dart'
+    show WeeklyForecastList;
+import 'package:weather_station/ui/widgets/wind_forecast.dart';
 
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
@@ -15,35 +18,38 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-  late List<ClimaModel?> previsaoResults;
   late Position location;
 
   Future<Position> getPosition() async {
     LocationController locationController = LocationController();
-    return await locationController.posicaoAtual();
+    Position posicao = await locationController.posicaoAtual();
+    return posicao;
   }
-  
-  void getResults() async {
-    ClimaProvider cp = ClimaProvider.getInstance;
+
+  Future<void> getResults(ClimaProvider provider) async {
     location = await getPosition();
-    previsaoResults = await cp.getClimaLatLon(location.latitude, location.longitude);
+    await provider.getClimaLatLon(location.latitude, location.longitude);
   }
 
   @override
   void initState() {
     super.initState();
-    getResults();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final ClimaProvider climaProvider =
+          Provider.of<ClimaProvider>(context, listen: false);
+      getResults(climaProvider);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    DateTime dateRequisition = DateTime.now();
     return DefaultTextStyle(
       style: GoogleFonts.robotoFlex(
           color: const Color.fromARGB(255, 198, 198, 198),
           letterSpacing: 2,
           fontWeight: FontWeight.w100,
           textStyle: TextStyle(
-              locale: Localizations.localeOf(context),
               fontFamily: 'Roboto Flex',
               shadows: List.filled(
                   3,
@@ -66,57 +72,141 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const SizedBox(height: 16),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Atualizado em •",
-                          style: TextStyle(fontSize: 8, color: Colors.white70)),
-                      Icon(Icons.info_outline, color: Colors.white70, size: 12),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("${previsaoResults[0]?.nome}",
-                              style: GoogleFonts.robotoFlex(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w100,
-                                  letterSpacing: 6)),
-                          const SizedBox(height: 8),
-                          Text("${previsaoResults[0]?.temperatura}",
-                              style: GoogleFonts.robotoFlex(
-                                  fontSize: 95,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 2)),
-                          const SizedBox(height: 8),
-                          Text("${previsaoResults[0]?.tempMin}°C - ${previsaoResults[0]?.tempMax}°C",
-                              style: GoogleFonts.ubuntuCondensed(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 2)),
-                          const SizedBox(height: 8),
-                          Text("${previsaoResults[0]?.descriptionClima}",
-                              style: GoogleFonts.ubuntuCondensed(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w100,
-                                  letterSpacing: 2)),
-                        ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Atualizado em • $dateRequisition",
+                            style: const TextStyle(
+                                fontSize: 8, color: Colors.white70)),
+                        IconButton(
+                            onPressed: () async {
+                              await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      icon: const Icon(Icons.data_exploration),
+                                      title: const Text("Atualizado em"),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                              "${dateRequisition.day} - ${dateRequisition.month} - ${dateRequisition.year}"),
+                                          Text(
+                                              "${dateRequisition.hour} : ${dateRequisition.minute}"),
+                                          Text(
+                                              "Timezone: ${dateRequisition.timeZoneName}"),
+                                          const Text("Via API HGBrasil")
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            child: const Text("Fechar"))
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: const Icon(Icons.info_outline,
+                                color: Colors.white70, size: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Consumer<ClimaProvider>(
+                          builder: (context, provider, child) {
+                            List<ClimaModel?> previsaoResults =
+                                provider.allClimas;
+                            if (previsaoResults.isEmpty) {
+                              return const CircularProgressIndicator.adaptive();
+                            }
+                            return Column(
+                              children: [
+                                Text("${previsaoResults[0]?.nome}",
+                                    style: GoogleFonts.robotoFlex(
+                                        fontSize: 50,
+                                        fontWeight: FontWeight.w100,
+                                        letterSpacing: 6)),
+                                const SizedBox(height: 8),
+                                Text("${previsaoResults[0]?.temperatura}°C",
+                                    style: GoogleFonts.robotoFlex(
+                                        fontSize: 95,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 2)),
+                                const SizedBox(height: 8),
+                                Text(
+                                    "${previsaoResults[0]?.tempMin}°C - ${previsaoResults[0]?.tempMax}°C",
+                                    style: GoogleFonts.ubuntuCondensed(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 2)),
+                                const SizedBox(height: 8),
+                                Text("${previsaoResults[0]?.descriptionClima}",
+                                    style: GoogleFonts.ubuntuCondensed(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w100,
+                                        letterSpacing: 2)),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    height: 100,
-                    child: HourlyForecastList(previsaoReq: previsaoResults)
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      height: 150,
+                      child: Consumer<ClimaProvider>(
+                          builder: (context, provider, child) {
+                            List<ClimaModel?> previsaoResults =
+                                provider.allClimas;
+
+                            if (previsaoResults.isEmpty) {
+                              return const Column(children: [
+                                Text("Carregando os dados..."),
+                                CircularProgressIndicator.adaptive()
+                              ]);
+                            }
+
+                            return WeeklyForecastList(
+                                previsaoReq: previsaoResults);
+                          },
+                          child: const Center(child: Divider(height: 32))),
                     ),
-                    const Center(child: Divider(height: 32)),
+                    Consumer<ClimaProvider>(
+                        builder: (context, provider, child) {
+                      final currentResults = provider.allClimas;
+                      if (currentResults.isEmpty) {
+                        return const SizedBox();
+                      }
+                      final currentClima = currentResults[0];
+                      if (currentClima == null) {
+                        return const Text("Sem dados para o sol.");
+                      }
+                      final windWidget = WindForecast(
+                          windCardinal: currentClima.cardinalVento,
+                          windDirection: currentClima.direcaoVento,
+                          windSpeed: currentClima.velocidadeVento);
+                      final suntimeWidget = SunriseAndSetForecast(
+                          sunriseHour: currentClima.nascerSol,
+                          sunsetHour: currentClima.porSol);
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(child: windWidget),
+                          Expanded(child: suntimeWidget)
+                        ],
+                      );
+                    }),
                   ]),
-                  
             ),
           ),
         ),
