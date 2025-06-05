@@ -79,8 +79,8 @@ class ClimaProvider extends ChangeNotifier {
     notify();
   }
 
-  void deletarClima(ClimaModel climaModel) {
-    excluirCidadeUc.excluir(climaModel);
+  void deletarClima(String nome) {
+    excluirCidadeUc.excluir(nome);
     notify();
   }
 

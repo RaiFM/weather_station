@@ -1,6 +1,6 @@
 import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/infra/interfaces/i_repository_clima.dart';
-import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
+import 'package:weather_station/infra/repository/repository_salvos_firebase.dart';
 
 
 class ListarLocaisSalvosUc {

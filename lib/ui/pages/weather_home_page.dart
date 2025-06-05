@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:weather_station/domain/model/clima_model.dart' show ClimaModel;
 import 'package:weather_station/ui/controller/clima_provider.dart';
 import 'package:weather_station/ui/controller/location_controller.dart';
+import 'package:weather_station/ui/pages/search_saves_page.dart';
+import 'package:weather_station/ui/pages/settings_page.dart';
 import 'package:weather_station/ui/widgets/sunriseset_forecast.dart';
 import 'package:weather_station/ui/widgets/weekly_forecast.dart'
     show WeeklyForecastList;
@@ -82,6 +84,18 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         Text("Atualizado em • $dateRequisition",
                             style: const TextStyle(
                                 fontSize: 8, color: Colors.white70)),
+                        IconButton(
+                          icon:const Icon(Icons.search, color: Colors.white70, size: 18),
+                          tooltip: "Procurar e Salvos",
+                          onPressed: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const SearchSavesPage()));
+                          }
+                        ),
+                        IconButton(icon: const Icon(Icons.settings, color: Colors.white70, size: 18),
+                        tooltip: "Configuração",
+                        onPressed: (){
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const SettingsPage()));
+                        },),
                         IconButton(
                             onPressed: () async {
                               await showDialog(
