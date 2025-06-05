@@ -46,11 +46,16 @@ class _SearchSavesPageState extends State<SearchSavesPage>{
                   image: AssetImage("assets/images/skycloudy.jpg")),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 children: [
+                  const SizedBox(height: 15),
                   DropdownButton(
-                  hint: Text("UF"),
+                    style: const TextStyle(color: Colors.white),
+                    dropdownColor: Colors.black54,
+                    isDense: true, 
+                  alignment: Alignment.centerLeft,
+                  hint: Text(_ufString),
                   value:_ufString,
                   items: _dropDownItems.keys.map((keys){
                     return DropdownMenuItem(value: keys,child: Text(keys));
@@ -59,6 +64,7 @@ class _SearchSavesPageState extends State<SearchSavesPage>{
                     _ufString = value.toString();
                   }),
                   SearchAnchor.bar(
+                    barPadding: const WidgetStatePropertyAll(EdgeInsetsDirectional.all(8)),
                     barHintText: "Pesquise o clima de uma cidade",
                     suggestionsBuilder: (BuildContext context, SearchController searchController) async {
                     final String input = searchController.value.text;
@@ -97,16 +103,17 @@ class _SearchSavesPageState extends State<SearchSavesPage>{
                       builder: (context,snapshot) {
                         if(snapshot.connectionState == ConnectionState.waiting)
                         {
-                          const Center(child: CircularProgressIndicator(),);
+                          return const Center(child: CircularProgressIndicator(),);
                         }
                         else if(snapshot.hasError){
-                          const Center(child: Text("Erro encontrando os locais salvos."));
-                        } else if (snapshot.data!.isEmpty || !snapshot.hasData){
-                          const Center(child: Text("Nenhuma cidade salva."));
+                          return Center(child: Text("Erro encontrando os locais salvos: ${snapshot.error}"));
+                        } else if (!snapshot.hasData){
+                          return const Center(child: Text("Nenhuma cidade retornou..."));
                         }
                         final listaSalvos = snapshot.data;
-                        return ListView.builder(
-                          itemCount: listaSalvos!.length,
+                        if(listaSalvos!.isEmpty) return const Center(child: Text("Nenhuma cidade retornou..."));
+                        return ListView.builder(  
+                          itemCount: listaSalvos.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                           return ListTile(
@@ -127,7 +134,7 @@ class _SearchSavesPageState extends State<SearchSavesPage>{
                               });
                             },
                             leading: const Icon(Icons.location_city),
-                            title: Text(listaSalvos![index]!.nome),
+                            title: Text(listaSalvos[index]!.nome),
                             horizontalTitleGap: 2,
                             subtitle: Text("${listaSalvos[index]!.temperatura}ºC \n ${listaSalvos[index]!.tempMax}ºC - ${listaSalvos[index]!.tempMin}ºC  |  ${listaSalvos[index]!.precipitacao}% de chuva"),
                           );
