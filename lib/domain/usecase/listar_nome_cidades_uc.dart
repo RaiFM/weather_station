@@ -10,6 +10,7 @@ class ListarNomeCidadesUc {
   }
 
   Map<String,int> ufsNumber = {
+    "UF": 0,
     "RO": 11,
     "AC": 12,
     "AM": 13,

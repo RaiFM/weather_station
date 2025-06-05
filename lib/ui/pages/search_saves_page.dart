@@ -48,7 +48,9 @@ class _SearchSavesPageState extends State<SearchSavesPage>{
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               children: [
-                DropdownButton(value:_ufString,
+                DropdownButton(
+                hint: Text("UF"),
+                value:_ufString,
                 items: _dropDownItems.keys.map((keys){
                   return DropdownMenuItem(value: keys,child: Text(keys));
                 }).toList(),
