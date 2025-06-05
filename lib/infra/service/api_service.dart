@@ -11,7 +11,7 @@ class ApiService {
   }
 
   final String _linkApi = "https://api.hgbrasil.com/weather?format=json-cors";
-  final String _apiKey = "&key=ea69fe0d";
+  final String _apiKey = "&key=98ff8319";
 
   Future<List<ClimaModel?>> _requisicaoApi(String url, int dias) async {
     List<ClimaModel?> previsao = [];
