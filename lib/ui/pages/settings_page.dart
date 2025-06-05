@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
+import 'package:weather_station/ui/pages/weather_home_page.dart';
+
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      style: GoogleFonts.robotoFlex(
+          color: const Color.fromARGB(255, 198, 198, 198),
+          letterSpacing: 2,
+          fontWeight: FontWeight.w100,
+          textStyle: TextStyle(
+              fontFamily: 'Roboto Flex',
+              shadows: List.filled(
+                  3,
+                  const Shadow(
+                      color: Colors.black54,
+                      blurRadius: 1.5,
+                      offset: Offset(2, 1))),
+              fontFamilyFallback: const ['Ubuntu', 'Roboto Flex'])),
+      child: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(0, 0, 0, 1),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter:
+                    ColorFilter.mode(Colors.black12, BlendMode.lighten),
+                image: AssetImage("assets/images/skycloudy.jpg")),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(onPressed: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const WeatherHomePage()));
+                }, child: const Text("Voltar para o clima")),
+                const SizedBox(height: 2),
+                const Divider(),
+                const Text("Desenvolvido por:"),
+                const Text("Arthur Selingin"),
+                const Text("Victor Coriolano"),
+                const Text("Raí Miranda"),
+                const Text("API> HG WEATHER BRASIL"),
+                const Text("Licença Creative Commons (CC) 2025")
+              ]
+            )
+          )
+        )
+      )
+    );
+  }
+}
