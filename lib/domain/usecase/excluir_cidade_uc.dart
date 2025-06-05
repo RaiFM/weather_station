@@ -1,6 +1,5 @@
-import 'package:weather_station/domain/model/clima_model.dart';
 import 'package:weather_station/infra/interfaces/i_repository_clima.dart';
-import 'package:weather_station/infra/repository/repository_clima_firebase.dart';
+import 'package:weather_station/infra/repository/repository_salvos_firebase.dart';
 
 class ExcluirCidadeUc {
   static ExcluirCidadeUc? _excluirCidadeUc;
@@ -14,10 +13,10 @@ class ExcluirCidadeUc {
   final IRepositoryClima repositoryClima;
 
   
-  void excluir(ClimaModel climaModel) {
-    if(climaModel.nome.isEmpty){
+  void excluir(String nome) {
+    if(nome.isEmpty){
       throw Exception("Não foi possível excluir a cidade pois ela não existe");
     }
-    repositoryClima.excluirCidade(climaModel);
+    repositoryClima.excluirCidade(nome);
   }
 }
