@@ -52,8 +52,8 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                 children: [
                   const SizedBox(height: 15),
                   DropdownButton(
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
-                      dropdownColor: Colors.black54,
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                      dropdownColor: const Color.fromARGB(137, 180, 180, 180),
                       isDense: true,
                       alignment: Alignment.centerLeft,
                       hint: Text(_ufString),
@@ -66,7 +66,7 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                           _ufString = value.toString();
                         });
                       }),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 28),
                   SearchAnchor.bar(
                     barPadding: const WidgetStatePropertyAll(
                         EdgeInsetsDirectional.all(8)),
@@ -132,6 +132,7 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                       });
                     },
                   ),
+                        const SizedBox(height: 10),
                   const Divider(),
                   Flexible(
                     child: FutureBuilder(
