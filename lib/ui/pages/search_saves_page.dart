@@ -214,9 +214,31 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                         return listTile;
                                       });
                                 }),
-                          )
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                  width: 1,
+                                )
+                              ),
+                            ), 
+                            child: const Text("Voltar")
+                          ),
                         ],
-                      )))),
-        ));
+                      ),
+                      ),
+                      ),
+                      ),
+                    
+        ),
+      );
   }
 }
