@@ -162,6 +162,16 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 var listTile = ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,                           
+                                      MaterialPageRoute(
+                                        builder: (context) => WeatherHomePage(
+                                          cidade:  listaSalvos[index]!.nome,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   onLongPress: () {
                                     showDialog(
                                       context: context,
