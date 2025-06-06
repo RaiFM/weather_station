@@ -48,9 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(height: 2),
                 const Divider(),
                 const Text("Desenvolvido por:"),
-                const Text("Arthur Selingin"),
-                const Text("Victor Coriolano"),
-                const Text("Raí Miranda"),
+                const Text("2AMS"),
                 const Text("API> HG WEATHER BRASIL"),
                 const Text("Licença Creative Commons (CC) 2025")
               ]
