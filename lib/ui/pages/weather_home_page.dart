@@ -81,21 +81,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Atualizado em • $dateRequisition",
-                            style: const TextStyle(
-                                fontSize: 8, color: Colors.white70)),
-                        IconButton(
-                          icon:const Icon(Icons.search, color: Colors.white70, size: 18),
-                          tooltip: "Procurar e Salvos",
-                          onPressed: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const SearchSavesPage()));
-                          }
-                        ),
-                        IconButton(icon: const Icon(Icons.settings, color: Colors.white70, size: 18),
-                        tooltip: "Configuração",
-                        onPressed: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const SettingsPage()));
-                        },),
                         IconButton(
                             onPressed: () async {
                               await showDialog(
@@ -109,6 +94,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
+                                          
+                                          
                                           Text(
                                               "${dateRequisition.day} - ${dateRequisition.month} - ${dateRequisition.year}"),
                                           Text(
@@ -128,10 +115,33 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                   });
                             },
                             icon: const Icon(Icons.info_outline,
-                                color: Colors.white70, size: 18)),
+                                color: Colors.white70, size: 25)),
+                        IconButton(
+                            icon: const Icon(Icons.search,
+                                color: Colors.white70, size: 32),
+                            tooltip: "Procurar e Salvos",
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SearchSavesPage()));
+                            }),
+                        IconButton(
+                          icon: const Icon(Icons.settings,
+                              color: Colors.white70, size: 25),
+                          tooltip: "Configuração",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SettingsPage()));
+                          },
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 30),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -142,11 +152,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                             if (previsaoResults.isEmpty) {
                               return const CircularProgressIndicator.adaptive();
                             }
+
                             return Column(
                               children: [
                                 Text("${previsaoResults[0]?.nome}",
                                     style: GoogleFonts.robotoFlex(
-                                        fontSize: 50,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.w100,
                                         letterSpacing: 6)),
                                 const SizedBox(height: 8),
@@ -174,7 +185,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 40),
                     SizedBox(
                       height: 150,
                       child: Consumer<ClimaProvider>(
@@ -194,7 +205,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           },
                           child: const Center(child: Divider(height: 32))),
                     ),
-                    Consumer<ClimaProvider>(
+                    const SizedBox(height: 25),
+                    SizedBox(child: Consumer<ClimaProvider>(
                         builder: (context, provider, child) {
                       final currentResults = provider.allClimas;
                       if (currentResults.isEmpty) {
@@ -208,9 +220,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           windCardinal: currentClima.cardinalVento,
                           windDirection: currentClima.direcaoVento,
                           windSpeed: currentClima.velocidadeVento);
+
                       final suntimeWidget = SunriseAndSetForecast(
                           sunriseHour: currentClima.nascerSol,
                           sunsetHour: currentClima.porSol);
+
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -219,7 +233,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           Expanded(child: suntimeWidget)
                         ],
                       );
-                    }),
+                    })),
+                    SizedBox(
+                      height: 100,
+                    ),
                   ]),
             ),
           ),

@@ -20,11 +20,8 @@ class _WindForecastState extends State<WindForecast> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        color: Color.fromARGB(14, 0, 47, 255),
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

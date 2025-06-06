@@ -16,10 +16,7 @@ class _SunriseAndSetForecastState extends State<SunriseAndSetForecast> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        color: Color.fromARGB(14, 0, 47, 255),
-      ),
+  
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -43,9 +40,9 @@ class _SunriseAndSetForecastState extends State<SunriseAndSetForecast> {
               Text("Nascer do Sol"),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 2),
           Text(widget.sunriseHour),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

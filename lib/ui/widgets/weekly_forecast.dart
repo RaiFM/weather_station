@@ -94,7 +94,7 @@ class _WeeklyForecastList extends State<WeeklyForecastList> {
       padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(12)),
-        color: Color.fromARGB(14, 0, 47, 255),
+        color: Color.fromARGB(3, 0, 47, 255),
       ),
       child: Center(
         child: ListView.builder(
