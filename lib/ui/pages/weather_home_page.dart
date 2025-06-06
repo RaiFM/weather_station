@@ -13,7 +13,8 @@ import 'package:weather_station/ui/widgets/weekly_forecast.dart'
 import 'package:weather_station/ui/widgets/wind_forecast.dart';
 
 class WeatherHomePage extends StatefulWidget {
-  const WeatherHomePage({super.key});
+  final String? cidade;
+  const WeatherHomePage({super.key, this.cidade});
 
   @override
   State<WeatherHomePage> createState() => _WeatherHomePageState();
@@ -21,6 +22,9 @@ class WeatherHomePage extends StatefulWidget {
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   late Position location;
+  late ClimaProvider climaProvider;
+
+
 
   Future<Position> getPosition() async {
     LocationController locationController = LocationController();
@@ -28,23 +32,33 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     return posicao;
   }
 
-  Future<void> getResults(ClimaProvider provider) async {
-    location = await getPosition();
-    await provider.getClimaLatLon(location.latitude, location.longitude);
+  Future<void> getResults() async {
+    if (widget.cidade == null) {
+      location = await getPosition();
+      await climaProvider.getClimaLatLon(location.latitude, location.longitude);
+
+    } else {
+      await climaProvider.getClimaNome(widget.cidade!);
+      
+    }
+    await climaProvider.getClimaSalvos();
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final ClimaProvider climaProvider =
+      climaProvider =
           Provider.of<ClimaProvider>(context, listen: false);
-      getResults(climaProvider);
+      getResults();
+        
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     DateTime dateRequisition = DateTime.now();
     return DefaultTextStyle(
       style: GoogleFonts.robotoFlex(
@@ -83,6 +97,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       children: [
                         IconButton(
                             onPressed: () async {
+                              
                               await showDialog(
                                   context: context,
                                   builder: (context) {
@@ -112,14 +127,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                     );
                                   });
                             },
-                            icon: const Icon(Icons.info_outline,
+                            icon: const Icon(
+                              Icons.info_outline,
                                 color: Colors.white70, size: 25)),
                         IconButton(
                             icon: const Icon(Icons.search,
                                 color: Colors.white70, size: 32),
                             tooltip: "Procurar e Salvos",
                             onPressed: () {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
@@ -144,6 +160,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Consumer<ClimaProvider>(
+                          
                           builder: (context, provider, child) {
                             List<ClimaModel?> previsaoResults =
                                 provider.allClimas;
@@ -158,10 +175,68 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        // Ação do botão de coração (ex: salvar/desfavoritar)
+                                        if(provider.isSalvo()){
+                                          showDialog(
+                                          context: context, 
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text("Deletar dos salvos "),
+                                              content:const Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text("Deseja deletar da lista de salvos?"),
+                                                ],
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.of(context).pop(),
+                                                  child: const Text("Cancelar"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    provider.deletarClima(provider.allClimas[0]!.nome);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text("Deletar", style: TextStyle(color: Colors.red),),
+                                                ),
+                                              ],
+                                            );
+                                          });    
+                                        }else {
+                                          showDialog(
+                                          context: context, 
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text("Salvar clima model "),
+                                              content:const Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text("Deseja esta cidade como favorita?"),
+                                                ],
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.of(context).pop(),
+                                                  child: const Text("Cancelar"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    provider.salvarCidade(provider.allClimas[0]!);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text("Salvar"),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                        }
                                       },
-                                      icon: const Icon(Icons.favorite_border),
+
+                                      icon: Icon(
+                                          provider.isSalvo() ? Icons.favorite : Icons.favorite_border,
+                                      ),
                                       color: Colors.red,
+
                                       
                                     ),
                                   ],
@@ -247,7 +322,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         ],
                       );
                     })),
-                    SizedBox(
+                    const SizedBox(
                       height: 100,
                     ),
                   ]),
