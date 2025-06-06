@@ -64,7 +64,9 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                     value: keys, child: Text(keys));
                               }).toList(),
                               onChanged: (value) {
-                                _ufString = value.toString();
+                                setState(() {
+                                  _ufString = value.toString();
+                                });
                               }),
                           const SizedBox(height: 18),
                           SearchAnchor.bar(
@@ -132,10 +134,11 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                             Text("Nenhuma cidade retornou..."));
                                   }
                                   final listaSalvos = snapshot.data;
-                                  if (listaSalvos!.isEmpty)
+                                  if (listaSalvos!.isEmpty) {
                                     return const Center(
                                         child:
                                             Text("Nenhuma cidade retornou..."));
+                                  }
                                   return ListView.builder(
                                       itemCount: listaSalvos.length,
                                       shrinkWrap: true,
