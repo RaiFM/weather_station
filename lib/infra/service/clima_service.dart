@@ -29,10 +29,7 @@ class ClimaService {
 
   void excluirCidade(String nomeCidade) async {
     try {
-      final updates = <String, dynamic>{
-        nomeCidade: FieldValue.delete(),
-      };
-      await db.collection("climaAPP").doc("cidades").update(updates);
+      await db.collection("climaAPP").doc(nomeCidade).delete();
     } catch (e) {
       Exception("Erro ao excluir cidade: $e");
     }
@@ -51,4 +48,6 @@ class ClimaService {
 
     return listaClima;
   }
+
+  
 }
