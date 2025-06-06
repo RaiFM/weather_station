@@ -59,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => WeatherHomePage(),
+                                  builder: (context) => const WeatherHomePage(),
                                 ),
                               );
                             },
