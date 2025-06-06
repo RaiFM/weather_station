@@ -4,12 +4,11 @@ import 'package:weather_station/external/firestore_db.dart';
 import 'package:weather_station/infra/interfaces/i_repository_api.dart';
 import 'package:weather_station/infra/repository/repository_api.dart';
 
-
 class ClimaService {
   static ClimaService? _climaService;
   final IRepositoryApi iRepositoryApi;
 
- static ClimaService get getInstance {
+  static ClimaService get getInstance {
     _climaService ??= ClimaService(iRepositoryApi: RepositoryApi.getInstance);
     return _climaService!;
   }
@@ -18,13 +17,11 @@ class ClimaService {
   final db = FirestoreDB.getInstance;
 
   void salvarCidade(Map<String, dynamic> climaAtual, String name) async {
-
     try {
       await db.collection("climaAPP").doc(name).set(
             climaAtual,
             SetOptions(merge: true),
           );
-
     } catch (e) {
       Exception("Erro ao adicionar cidade: $e");
     }
@@ -42,23 +39,16 @@ class ClimaService {
   }
 
   Future<List<ClimaModel?>> listarCidades() async {
-    final docSnapshot = await db.collection("climaAPP").doc("cidades").get();
+    final querySnapshot = await db.collection("climaAPP").get();
 
-    if (docSnapshot.exists) {
-      final data = docSnapshot.data() as Map<String, dynamic>;
+    // Cria uma lista com os IDs dos documentos (que são os nomes das cidades)
+    List<String?> listaCidades =
+        querySnapshot.docs.map((doc) => doc.id).toList();
 
-      Map<String, String> mapFirebase = data
-          .map((String key, dynamic value) => MapEntry(key, value.toString()));
-      List<String?> listaCidades = [];
-      for (String cidade in mapFirebase.keys) {
-        listaCidades.add(cidade);
-      }
+    // Chama o repositório para obter os dados com base nos nomes das cidades
+    Future<List<ClimaModel?>> listaClima =
+        iRepositoryApi.listarClimaSalvos(listaCidades);
 
-      Future<List<ClimaModel?>> listaClima = iRepositoryApi.listarClimaSalvos(listaCidades);
-
-      return listaClima;
-    } else {
-      return [];
-    }
+    return listaClima;
   }
 }
