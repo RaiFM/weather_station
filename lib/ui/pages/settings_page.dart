@@ -42,9 +42,22 @@ class _SettingsPageState extends State<SettingsPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> const WeatherHomePage()));
-                }, child: const Text("Voltar para o clima")),
+                TextButton(
+                  onPressed: (){
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder:(context)=>  WeatherHomePage(),),);
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:const  WidgetStatePropertyAll(Colors.black),
+                    foregroundColor: const WidgetStatePropertyAll(Colors.white),
+                    padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+                  ), 
+                  child: const Text(
+                    "Voltar para o clima", 
+                    ),
+                  ),
                 const SizedBox(height: 2),
                 const Divider(),
                 const Text("Desenvolvido por:"),

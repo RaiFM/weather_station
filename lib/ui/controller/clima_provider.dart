@@ -40,7 +40,9 @@ class ClimaProvider extends ChangeNotifier {
   bool _isLoadingPrincipal = false; 
   bool _isLoadingSalvos = false; 
   String? _errorMessagePrincipal; 
-  String? _errorMessageSalvos; 
+  String? _errorMessageSalvos;
+  
+  
 
   // Getters para acessar o estado privado do ViewModel pela View
   bool get isLoadingPrincipal => _isLoadingPrincipal;
@@ -64,6 +66,26 @@ class ClimaProvider extends ChangeNotifier {
     notify();
   }
 
+  bool isSalvo(){
+    try{
+      var atual = _allClimaPrincipal[0];
+      var nomeAtual = atual!.nome;
+      debugPrint("nome atual: $nomeAtual");
+      var nomesSalvos = _allClimaSalvos.map((e) => e!.nome).toList();
+      debugPrint("nomes salvos: $nomesSalvos");
+    var climaSalvo = _allClimaSalvos.where((element) => element!.nome == atual.nome).first;
+    if (climaSalvo == null){
+      return false;
+    }else{
+      return true;
+    }
+    }catch(e){
+      debugPrint(" não foi possivel verificar se o clima está salvo: $e");
+      return false;
+    }
+    
+  }
+
   //Capturar clima por meio de nome
   Future<void> getClimaNome(String nome) async {
     _allClimaPrincipal = [];
@@ -81,11 +103,13 @@ class ClimaProvider extends ChangeNotifier {
 
   void deletarClima(String nome) {
     excluirCidadeUc.excluir(nome);
+    allClimasSalvos.removeWhere((element) => element!.nome == nome);
     notify();
   }
 
   void salvarCidade(ClimaModel climaModel) {
     salvarCidadeUc.salvar(climaModel);
+    allClimasSalvos.add(climaModel);
     notify();
   }
 }

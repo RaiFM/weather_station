@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_station/domain/usecase/excluir_cidade_uc.dart';
 import 'package:weather_station/domain/usecase/listar_locais_salvos_uc.dart';
 import 'package:weather_station/domain/usecase/listar_nome_cidades_uc.dart';
+import 'package:weather_station/ui/pages/weather_home_page.dart';
 
 class SearchSavesPage extends StatefulWidget {
   const SearchSavesPage({super.key});
@@ -64,13 +65,30 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                     value: keys, child: Text(keys));
                               }).toList(),
                               onChanged: (value) {
-                                _ufString = value.toString();
+                                setState(() {
+                                  _ufString = value.toString();
+                                });
                               }),
                           const SizedBox(height: 18),
                           SearchAnchor.bar(
                               barPadding: const WidgetStatePropertyAll(
                                   EdgeInsetsDirectional.all(8)),
                               barHintText: "Pesquise o clima de uma cidade",
+                              onTap:() {
+                                if (_ufString == "UF"){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const AlertDialog(
+                                          title: Text("Atenção"),
+                                          content: Text(
+                                              "Selecione uma UF para pesquisar"),
+                                        );
+                                      });
+                                }
+                              },    
+      
+                              
                               suggestionsBuilder: (BuildContext context,
                                   SearchController searchController) async {
                                 final String input =
@@ -95,7 +113,7 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                   return [
                                     const ListTile(
                                         autofocus: true,
-                                        title: Text("Nenhuma UF Selecionada."))
+                                        title: Text("Selecione uma UF para pesquisar"),),
                                   ];
                                 }
 
@@ -106,13 +124,23 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                   return ListTile(
                                     title: Text(cidade),
                                     onTap: () {
+                                      
                                       searchController.closeView(cidade);
                                       searchController.clear();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WeatherHomePage(
+                                                    cidade: cidade,),),
+                                      );
                                     },
                                   );
                                 });
-                              }),
-                          const Divider(),
+                              },
+                              
+                              ),
+                          const Divider(), 
                           Flexible(
                             child: FutureBuilder(
                                 future: _listarSalvosUcItems(),
@@ -132,12 +160,16 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                             Text("Nenhuma cidade retornou..."));
                                   }
                                   final listaSalvos = snapshot.data;
-                                  if (listaSalvos!.isEmpty)
+                                  if (listaSalvos!.isEmpty) {
                                     return const Center(
                                         child:
-                                            Text("Nenhuma cidade retornou..."));
+                                            Text("Nenhuma cidade salva...", style: TextStyle(
+                                              color: Colors.white 
+                                            ),));
+                                  }
                                   return ListView.builder(
                                       itemCount: listaSalvos.length,
+                                      
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         var listTile = ListTile(
@@ -157,7 +189,11 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                                             listaSalvos[index]!
                                                                 .nome);
                                                         Navigator.pop(
-                                                            context); // Fecha o dialog depois de excluir
+                                                            context);
+                                                             // Fecha o dialog depois de excluir
+                                                             setState(() {
+                                                               listaSalvos.removeAt(index);
+                                                             });
                                                       },
                                                       child:
                                                           const Text("Excluir"),
@@ -211,9 +247,31 @@ class _SearchSavesPageState extends State<SearchSavesPage> {
                                         return listTile;
                                       });
                                 }),
-                          )
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                  width: 1,
+                                )
+                              ),
+                            ), 
+                            child: const Text("Voltar")
+                          ),
                         ],
-                      )))),
-        ));
+                      ),
+                      ),
+                      ),
+                      ),
+                    
+        ),
+      );
   }
 }
