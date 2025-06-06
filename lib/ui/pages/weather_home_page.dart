@@ -94,8 +94,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          
-                                          
                                           Text(
                                               "${dateRequisition.day} - ${dateRequisition.month} - ${dateRequisition.year}"),
                                           Text(
@@ -141,7 +139,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 15),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -155,6 +153,21 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
                             return Column(
                               children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        // Ação do botão de coração (ex: salvar/desfavoritar)
+                                      },
+                                      icon: const Icon(Icons.favorite_border),
+                                      color: Colors.red,
+                                      
+                                    ),
+                                  ],
+                                ),
+                                
+                    const SizedBox(height: 10),
                                 Text("${previsaoResults[0]?.nome}",
                                     style: GoogleFonts.robotoFlex(
                                         fontSize: 30,
