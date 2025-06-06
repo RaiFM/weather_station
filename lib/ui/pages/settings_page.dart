@@ -44,9 +44,9 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 TextButton(
                   onPressed: (){
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context, 
-                      MaterialPageRoute(builder:(context)=> const WeatherHomePage(),),);
+                      MaterialPageRoute(builder:(context)=>  WeatherHomePage(),),);
                   },
                   style: ButtonStyle(
                     backgroundColor:const  WidgetStatePropertyAll(Colors.black),
